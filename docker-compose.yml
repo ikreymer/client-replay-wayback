@@ -4,7 +4,7 @@ services:
   outbackcdx:
     # assumes a build of https://github.com/nla/outbackcdx/tree/hmac-fields branch
     image: outbackcdx
-    command: java -jar outbackcdx.jar -d /cdx-data -p 8080 -b 0.0.0.0 --hmac-field warcurl Hmacsha256 '/warcs/$$filename|$$now|300' 'http://localhost:8086/warcs/$$filename?&st=$$hmac_base64_url&ts=$$now&e=300' testsecret 300
+    command: java -jar outbackcdx.jar -d /cdx-data -p 8080 -b 0.0.0.0 --hmac-field warcurl Hmacsha256 '/warcs/$$filename|$$range|$$now|300' 'http://localhost:8086/warcs/$$filename?&st=$$hmac_base64_url&ts=$$now&e=300' testsecret 300
     ports:
         - 8087:8080
 
