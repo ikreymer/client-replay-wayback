@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  outbackcdx:
+    image: outbackcdx
+    command: java -jar outbackcdx.jar -d /cdx-data -p 8080 -b 0.0.0.0 --hmac-field warcurl Hmacsha256 '/warcs/$$filename|$$now|300' 'http://localhost:8086/warcs/$$filename?&st=$$hmac_base64_url&ts=$$now&e=300' testsecret 300
+    ports:
+        - 8087:8080
+
+  nginx:
+    build: ./nginx
+
+    ports:
+        - 8086:80
+
+    volumes:
+      - ./data/:/data
+
+    depends_on:
+      - outbackcdx
+
+  populate:
+    #image: ellerbrock/alpine-bash-curl-ssl
+    image: webrecorder/pywb
+    command: bash -x /data/populate.sh
+    depends_on:
+      - outbackcdx
+
+    volumes:
+      - ./data/:/data
+
+
