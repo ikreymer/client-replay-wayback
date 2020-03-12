@@ -1,0 +1,22 @@
+<html>
+<head>
+<script>
+function registerSW() {
+  const scriptURL = window.location.origin + "/wayback/sw.js?replayPrefix=&stats=true&cdxServerUrl=/cdx/testindex"
+
+  if (!navigator.serviceWorker.controller || navigator.serviceWorker.controller.scriptURL !== scriptURL) {
+    navigator.serviceWorker.addEventListener("controllerchange", function() {
+      console.log("reloading");
+      window.location.reload();
+    });
+
+    navigator.serviceWorker.register(scriptURL, {scope: "/wayback/"});
+  }
+}
+registerSW();
+</script>
+</head>
+<body>
+Loading Web Archive...
+</body>
+</html>
